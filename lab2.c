@@ -87,7 +87,7 @@ char *get_line(int fd) {
 
   //if(next == EOF) return NULL;
 
-  while ((next = read_char(fd)) > 0 && buf != '\n') {
+  while ((next = read_char(fd)) > 0) {
         buff[pos++] = buf; }
 
 /*  do {*/
