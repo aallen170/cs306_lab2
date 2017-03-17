@@ -32,18 +32,18 @@ int main(int argc, char *argv[])
   }
 
   if ((argc == 1) || ((argc == 2) && (numberblanks != 0))) {
-    /*while ((line = get_line(stdin)) != NULL){
-      if(numberblanks == 2){
-        printf("%6d\t",count);
-        count++;
-      } else if(numberblanks == 1) {
-        if(strcmp(line,"\n")!=0){
-          printf("%6d\t",count);
-          count++;
-        }
-      }
-      printf("%s",line);
-    }*/
+/*    while ((line = get_line(stdin)) != NULL){*/
+/*      if(numberblanks == 2){*/
+/*        printf("%6d\t",count);*/
+/*        count++;*/
+/*      } else if(numberblanks == 1) {*/
+/*        if(strcmp(line,"\n")!=0){*/
+/*          printf("%6d\t",count);*/
+/*          count++;*/
+/*        }*/
+/*      }*/
+/*      printf("%s",line);*/
+/*    }*/
   } else {
     for (int i=firstfile; i<argc; i++) {
     	//printf("check\n");
@@ -75,6 +75,7 @@ int main(int argc, char *argv[])
   return ((exitStatus == 1)?EXIT_FAILURE:EXIT_SUCCESS);
 }
 
+int static buf;
 
 char *get_line(int fd) {
 
@@ -82,21 +83,21 @@ char *get_line(int fd) {
 
   int pos = 0;
   int next;
-  int buf;
+	//printf("%d\n",buf);
 
   //if(next == EOF) return NULL;
 
-  while ((next = read(fd, &buf, 1)) > 0 && buf != '\n') {
+  while ((next = read_char(fd)) > 0 && buf != '\n') {
         buff[pos++] = buf; }
 
-  /*do {
-	  //printf("next = %d\n",next);
-    if(buf == '\n') {
-      buff[pos++] = buf;
-      break;
-    }
-    buff[pos++] = buf;
-  } while ((next = read(fd, &buf, 1)) > 0);*/
+/*  do {*/
+/*    if(buf == '\n') {*/
+/*	usleep(10000);*/
+/*      buff[pos++] = buf;*/
+/*      break;*/
+/*    }*/
+/*    buff[pos++] = buf;*/
+/*  } while ((next = read(fd, &buf, 1)) > 0);*/
 
   if ((pos == 0 && next == 0) || errno)
         return NULL;
@@ -104,22 +105,8 @@ char *get_line(int fd) {
   buff[pos] = '\0';
 
   return buff;
-
-  /*int pos = 0, next, nread;
-
-    while ((nread = read(fd,&next,1)) > 0 && next != '\n') {
-      buff[pos++] = next; }
-
-    if ((pos == 0 && nread == 0) || errno)
-      return NULL;
-
-    buff[pos++] = '\n';
-    buff[pos++] = '\0';
-
-   return buff;*/
 }
 
 int read_char(int fd) {
-	int buf;
 	return read(fd, &buf, 1);
 }
