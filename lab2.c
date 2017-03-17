@@ -31,8 +31,10 @@ int main(int argc, char *argv[])
       exit(EXIT_FAILURE); }
   }
 
+  //printf("Number blanks = %d\n",numberblanks);
+
   if ((argc == 1) || ((argc == 2) && (numberblanks != 0))) {
-/*    while ((line = get_line(stdin)) != NULL){*/
+/*    while ((line = get_line(open(stdin,O_RDONLY))) != NULL){*/
 /*      if(numberblanks == 2){*/
 /*        printf("%6d\t",count);*/
 /*        count++;*/
@@ -47,7 +49,7 @@ int main(int argc, char *argv[])
   } else {
     for (int i=firstfile; i<argc; i++) {
     	//printf("check\n");
-      if ((fp = open(argv[i],O_RDONLY)) == -1) {
+      if ((fp = open(argv[i],O_RDONLY)) < 0) {
         fprintf(stderr,"%s: %s: %s\n",
                 argv[0],argv[i],strerror(errno));
         exitStatus = 1;
@@ -55,6 +57,7 @@ int main(int argc, char *argv[])
       } else {
     	  //printf("check\n");
         while ((line = get_line(fp)) != NULL){
+		//printf("Number blanks = %d\n",numberblanks);
         	//printf("check\n");
           if(numberblanks == 2){
             printf("%6d\t",count);
@@ -87,8 +90,12 @@ char *get_line(int fd) {
 
   //if(next == EOF) return NULL;
 
-  while ((next = read_char(fd)) > 0) {
-        buff[pos++] = buf; }
+  while ((next = read_char(fd)) > 0 /*&& buf != '\n'*/) {
+	if(buf == '\n'){
+		buff[pos++] = buf;
+		break;
+	} else{
+	        buff[pos++] = buf; }}
 
 /*  do {*/
 /*    if(buf == '\n') {*/
